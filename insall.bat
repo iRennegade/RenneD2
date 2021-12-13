@@ -1,2 +1,2 @@
 @echo off
-pip install asyncio aiohttp
+pip install aiohttp asyncio multiprocess colorama
